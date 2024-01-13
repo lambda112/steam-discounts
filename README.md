@@ -1,10 +1,10 @@
 # steam-discounts
 ### Scope  
-- title
-- link to thumbnail  
+- title DONE
+- link to thumbnail DONE
 - category tags 
 - rating 
 - num of reviews
-- original price
-- discounted price
-- discount % 
+- original price DONE
+- discounted price DONE
+- discount % DONE
