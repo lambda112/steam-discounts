@@ -7,4 +7,4 @@
 - num of reviews
 - original price
 - discounted price
-- discound % 
+- discount % 
