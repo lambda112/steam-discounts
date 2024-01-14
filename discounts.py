@@ -17,13 +17,20 @@ def render_javascript():
         page.wait_for_load_state("networkidle", timeout = 90000)
         print("Loaded Browser")
 
-        for i in range(0,10):
+        count = 0
+        while page.get_by_text("Show more", exact= True):
+
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
             page.locator('button:text("Show more")').click()
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
-            print("Scrolled")
+
+            count +=1
+            print(f"Scrolled {count}")
             sleep(1)
+
+            if count == 150:
+                break
 
         page.wait_for_selector("div[class *= 'StoreSaleWidgetContainer']", timeout = 90000)
         print("Got Selector")
@@ -58,4 +65,4 @@ for d in div:
 
     data.append(attrs)
 
-pd.DataFrame(data).to_excel("SaleData.xlsx")
+pd.DataFrame(data).to_excel("SaleData.xlsx", index = False)
