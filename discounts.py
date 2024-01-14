@@ -1,11 +1,12 @@
 from playwright.sync_api import sync_playwright
 from selectolax.parser import HTMLParser
+from time import sleep
 import pandas as pd
 
+url = "https://store.steampowered.com/specials/"
 
 # Return Full HTML
-def render_javascript(element):
-    TIMEOUT = 90000
+def render_javascript():
 
     with sync_playwright() as file:
 
@@ -13,71 +14,48 @@ def render_javascript(element):
         page = browser.new_page()
         page.goto(url)
 
-        page.wait_for_load_state("networkidle", timeout = TIMEOUT)
+        page.wait_for_load_state("networkidle", timeout = 90000)
         print("Loaded Browser")
 
-        page.wait_for_selector(element, timeout = TIMEOUT)
+        for i in range(0,10):
+            page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
+            page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
+            page.locator('button:text("Show more")').click()
+            page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
+            print("Scrolled")
+            sleep(1)
+
+        page.wait_for_selector("div[class *= 'StoreSaleWidgetContainer']", timeout = 90000)
         print("Got Selector")
 
-        return page.inner_html("body")
+        tree = HTMLParser(page.inner_html("body"))
+        divs = tree.css("div[class *= 'StoreSaleWidgetContainer']")
 
+        return divs
 
-# Parse HTML
-def get_element(element):
-    html = render_javascript(element)
-    tree = HTMLParser(html)
-    return tree.css(element)
+div = render_javascript()
+data = []
 
+for d in div:
+    title = d.css_first("div[class *= 'StoreSaleWidgetTitle']").text()
+    old_price = d.css_first("div[class *= 'StoreOriginalPrice']").text()
+    new_price = d.css_first("div[class *= 'StoreSalePriceBox']").text()
+    
+    if d.css_first("div[class *= 'ReviewScoreValue'] > div"):
+        review_score = d.css_first("div[class *= 'ReviewScoreValue'] > div").text()
+        review_num = d.css_first("div[class *= 'ReviewScoreValue'] > div + div").text()
+    else:
+        review_score = 0
+        review_num = 0
 
-# Get Game Title 
-def get_game_title():
-    title = [i.attrs["alt"] for i in get_element("a.Focusable > div > img")]
-    print(f"Done Title {len(title)}")
-    return title
-
-
-# Get New Price
-def get_new_price():
-    new_price = [i.text() for i in get_element("a.Focusable span > div > div > div + div")]
-    print(f"Done Price {len(new_price)}")
-    return new_price
-
-
-# Get Original Price
-def get_original_price():
-    original = [i.text() for i in get_element("a.Focusable span > div > div > div:first-child")]
-    print(f"Done Price {len(original)}")
-    return original
-
-
-# Get Discount Percentage
-def get_discount_percentage():
-    discount_percentage = [i.text() for i in get_element("a.Focusable span > div > div:first-child")]
-    print(f"Done Discount {len(discount_percentage)}")
-    return discount_percentage
-
-
-# Get Game Image 
-def get_game_img():
-    img = [i.attrs["src"] for i in get_element("a.Focusable > div + div > img")]
-    print(f"Done Img {len(img)}")
-    return img
-
-
-# Create Pandas Dataframe with Game Data
-def sale_data():
-
-    data = {
-        "Title": get_game_title(),
-        "New_Price": get_new_price(),
-        "Old_Price": get_original_price(),
-        "Percentage": get_discount_percentage(),
-        "Image": get_game_img()
+    attrs = {
+        "title": title,
+        "new_price": new_price,
+        "old_price": old_price,
+        "review_score": review_score,
+        "review_num": review_num
     }
 
-    sale_info = pd.DataFrame(data)
-    return sale_info.to_excel("SaleData.xlsx", index = False)
+    data.append(attrs)
 
-
-url = "https://store.steampowered.com/specials"
-sale_data()
+pd.DataFrame(data).to_excel("SaleData.xlsx")
