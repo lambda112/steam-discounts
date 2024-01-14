@@ -10,14 +10,14 @@ def render_javascript():
 
     with sync_playwright() as file:
 
-        browser = file.chromium.launch(headless = False)
+        browser = file.chromium.launch(headless = True)
         page = browser.new_page()
         page.goto(url)
 
         page.wait_for_load_state("networkidle", timeout = 90000)
         print("Loaded Browser")
 
-        for i in range(0, 5):
+        for i in range(0, 2):
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
             page.locator(selector="button[class *= 'saleitembrowser']", has_text="Show more").click()

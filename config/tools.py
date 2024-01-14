@@ -36,6 +36,13 @@ _config = {
             "selector": "div[class *= 'ReviewScoreValue'] > div + div",
             "method": "text"
         },
+
+        {
+            "name": "thumbnail",
+            "type": "first",
+            "selector": "img[class *= 'CapsuleImage']",
+            "method": "other"
+        },
         
     ]
 }
