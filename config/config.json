@@ -29,6 +29,18 @@
             "type": "first",
             "selector": "div[class *= 'ReviewScoreValue'] > div + div",
             "method": "text"
+        },
+        {
+            "name": "steam_page",
+            "type": "first",
+            "selector": "div[class *= 'StoreSaleWidgetHalfLeft'] > a",
+            "method": "other"
+        },
+        {
+            "name": "thumbnail",
+            "type": "first",
+            "selector": "img[class *= 'CapsuleImage']",
+            "method": "other"
         }
     ]
 }

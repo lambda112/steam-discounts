@@ -38,6 +38,13 @@ _config = {
         },
 
         {
+            "name": "steam_page",
+            "type": "first",
+            "selector": "div[class *= 'StoreSaleWidgetHalfLeft'] > a",
+            "method": "other"
+        },
+
+        {
             "name": "thumbnail",
             "type": "first",
             "selector": "img[class *= 'CapsuleImage']",
@@ -68,4 +75,4 @@ def get_config(load_from_file: bool = False):
 
 
 if __name__ == "__main__":
-    get_config(False)
+    generate_json()

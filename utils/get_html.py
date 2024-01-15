@@ -6,7 +6,7 @@ from time import sleep
 url = "https://store.steampowered.com/specials/"
 
 # Return Full HTML
-def render_javascript():
+def render_javascript(num_of_scrolls:int):
 
     with sync_playwright() as file:
 
@@ -17,7 +17,7 @@ def render_javascript():
         page.wait_for_load_state("networkidle", timeout = 90000)
         print("Loaded Browser")
 
-        for i in range(0, 2):
+        for i in range(0, num_of_scrolls):
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
             page.evaluate("() => window.scroll(0, document.body.scrollHeight)")
             page.locator(selector="button[class *= 'saleitembrowser']", has_text="Show more").click()

@@ -14,14 +14,22 @@ def parse_data(node: Node, selectors: list):
 
             if method == "text" and matched != None:
                 parsed[name] = matched.text()
-            else:
+
+            elif matched is None:
+                parsed[name] = 0
+
+            else:    
                 parsed[name] = matched
 
         if type == "all":
             matched = node.css(selector)
 
-            if method == "text":
+            if method == "text" and matched != None:
                 parsed[name] = [i.text() for i in matched]
+
+            elif matched is None:
+                parsed[name] = 0
+
             else:
                 parsed[name] = matched
 
