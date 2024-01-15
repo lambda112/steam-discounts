@@ -7,7 +7,7 @@ from config.tools import get_config
 
 if __name__ == "__main__":
     config = get_config()
-    div = render_javascript(3)
+    div = render_javascript(2)
     game_data = []
 
     for d in div:
