@@ -4,8 +4,8 @@ from utils.parse import parse_data
 from utils.process import process_data
 from utils.process import create_excel
 from config.tools import get_config
-
 from utilsmeta.get_html import render_javascript_meta
+
 
 if __name__ == "__main__":
 
@@ -17,7 +17,6 @@ if __name__ == "__main__":
 
     div_meta = render_javascript_meta(200)
     meta_data = []
-    meta_names = []
 
     for d in div_meta:
         title = d.css_first("div[data-title] > h3 > span + span").text()
@@ -31,16 +30,30 @@ if __name__ == "__main__":
         }
 
         meta_data.append(meta_game)
-        meta_names.append(title)
+        
 
     for d in div_steam:
         attrs = parse_data(d, config.get("items"), meta_data)
         attrs = process_data(attrs)
 
-        if attrs["title"] in meta_names:
-            steam_data.append(attrs)
-            print(attrs)    
-            
-        print(attrs["title"])
+        if attrs["title"] in [meta_game["title"] for meta_game in meta_data]:
+            for meta_game in meta_data:
+                
+                if meta_game["title"] == attrs["title"]:
+                    attrs["meta_score"] = meta_game["meta_score"]
+                    attrs["meta_page"] = meta_game["meta_page"]
+                    steam_data.append(attrs)
+                    break  
 
-print(steam_data)
+            print(attrs["title"])
+    
+
+create_excel(steam_data, "Sales")
+
+
+# pos = list(attrs.keys()).index('old_price')
+# items = list(attrs.items())
+# items.insert(pos, ('Phone', '123-456-7890'))
+# mydict = dict(items)
+
+# print(mydict)

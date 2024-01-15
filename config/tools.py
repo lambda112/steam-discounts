@@ -24,6 +24,13 @@ _config = {
         },
 
         {
+            "name": "meta_score",
+            "type": "other",
+            "selector": "None",
+            "method": "other"
+        },
+
+        {
             "name": "review_score",
             "type": "first",
             "selector": "div[class *= 'ReviewScoreValue'] > div",
@@ -38,16 +45,23 @@ _config = {
         },
 
         {
-            "name": "steam_page",
+            "name": "thumbnail",
             "type": "first",
+            "selector": "img[class *= 'CapsuleImage']",
+            "method": "other"
+        },
+
+        {
+            "name": "meta_page",
+            "type": "other",
             "selector": "div[class *= 'StoreSaleWidgetHalfLeft'] > a",
             "method": "other"
         },
 
         {
-            "name": "thumbnail",
+            "name": "steam_page",
             "type": "first",
-            "selector": "img[class *= 'CapsuleImage']",
+            "selector": "div[class *= 'StoreSaleWidgetHalfLeft'] > a",
             "method": "other"
         },
         

@@ -31,15 +31,15 @@
             "method": "text"
         },
         {
-            "name": "steam_page",
-            "type": "first",
-            "selector": "div[class *= 'StoreSaleWidgetHalfLeft'] > a",
-            "method": "other"
-        },
-        {
             "name": "thumbnail",
             "type": "first",
             "selector": "img[class *= 'CapsuleImage']",
+            "method": "other"
+        },
+        {
+            "name": "steam_page",
+            "type": "first",
+            "selector": "div[class *= 'StoreSaleWidgetHalfLeft'] > a",
             "method": "other"
         }
     ]

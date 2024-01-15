@@ -25,6 +25,6 @@ def process_data(attrs:dict):
 
     return attrs
 
-def create_excel(data:list[dict]):
+def create_excel(data:list[dict], filename: str = "SteamData"):
     df = pd.DataFrame(data)
-    df.to_excel("SaleData.xlsx", index = False)
+    df.to_excel(f"{filename}.xlsx", index = False)

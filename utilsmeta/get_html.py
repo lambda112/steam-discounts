@@ -15,7 +15,7 @@ def render_javascript_meta(n:int):
             page = browser.new_page()
 
             page.goto(f"{url}{i}")
-            page.wait_for_selector("div[class *= 'c-finderProductCard-game']")
+            page.wait_for_selector("div[class *= 'c-finderProductCard-game']", timeout=900000)
             sleep(0.5)
 
             html = page.inner_html("body")
