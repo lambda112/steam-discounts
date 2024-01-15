@@ -15,9 +15,8 @@ def render_javascript_meta(n:int):
             page = browser.new_page()
 
             page.goto(f"{url}{i}")
-            page.wait_for_load_state("networkidle")
-            page.wait_for_load_state("domcontentloaded")
-            sleep(1)
+            page.wait_for_selector("div[class *= 'c-finderProductCard-game']")
+            sleep(0.5)
 
             html = page.inner_html("body")
             tree = HTMLParser(html)
